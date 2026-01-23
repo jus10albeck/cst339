@@ -17,7 +17,7 @@ Justin Albecker
 
 - Screenshot of the error page
 
-    ![Error page](activities/activity1/screenshots/localhostScreenshot.png)
+    ![Error page](activities/activity1/screenshots/localhostScreenshot1.png)
 
 - Screenshot of the Hello World index.html page
 
