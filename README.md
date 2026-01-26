@@ -29,13 +29,13 @@ Justin Albecker
 
 - Screenshot of the Maven Build configurations
 
-    ![Maven Configurations](screenshots/RunConfigurations.png)
+    ![Maven Configurations](activities/activity1/screenshots/RunConfigurations.png)
 
 - Screenshot of the Maven Console, with the "BUILD SUCCESS" message.
-    ![Build Success](screenshots/SuccessfulBuild.png)
+    ![Build Success](activities/activity1/screenshots/SuccessfulBuild.png)
 
 - Screenshots of the JAR file execution.
-    ![Build Success](screenshots/SuccessfulBuild2.png)
+    ![Build Success](activities/activity1/screenshots/SuccessfulBuild2.png)
 
-    ![localhost:8080](screenshots/HelloWorldPage2.png)
+    ![localhost:8080](activities/activity1/screenshots/HelloWorldPage2.png)
 
