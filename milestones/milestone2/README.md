@@ -46,5 +46,7 @@ The above screenshots depicts the login page and error handling. In future build
 ![Register Screenshot with error handling](images/reg2.png)
 The above screenshots depicts the Registration page and error handling. In future builds this page will allow the user to register for an account to hold data. When the user properly submits their information, the user gets brought to the login page, allowing the user to then login with their new account information.
 
-## Screencast URL
+## Links
+- [Screencast URL](https://youtu.be/OyuTDbnffFE)
 
+- [Milestone Code](https://github.com/jus10albeck/cst339/tree/main/milestones/milestone2/cst339milestone)
