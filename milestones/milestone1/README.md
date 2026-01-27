@@ -20,4 +20,4 @@ While it is fun stumbling upon a movie to add to the collection out in the wild,
 The first iteration of this application will be purely for physical movie collection/wishlist managing with standard CRUD functionality. I will also include functions like filtering, sub-collections (i.e kids collection), wishlist, and user accounts. This application does have potential to grow to other mediums—vinyl, CD's, cassette tapes, and books.
 
 ### Sitemap
-![Sitemap](photos/Sitemap.png)
+![Sitemap](Photos/Sitemap.png)
