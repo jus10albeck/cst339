@@ -62,3 +62,67 @@ After the removing the @RequestScope, the Spring default Singleton Scope will be
 ## Part 3 - Creating REST Services Using Spring REST Controllers
 
 ### Screenshots
+
+- Screenshot of the JSON response
+
+![Screenshot of the getjson page](screenshots/screenshot12.png)
+
+- Screenshot of the JSON response
+
+![Screenshot of the getxml page](screenshots/screenshot13.png)
+
+- Screenshot of Postman JSON response
+
+![Screenshot of Postman JSON response](screenshots/screenshot14.png)
+
+- Screenshot of Postman XML response
+
+![Screenshot of Postman XML response](screenshots/screenshot15.png)
+
+
+### Orders REST API Design
+#### Base URL:  localhost:8080/service
+|End Point|URL|HTTP Method|Description|Success Response|
+|--|--|--|--|--|
+|Get Orders (JSON)|/getjson|GET|Returns a list of orders in JSON format|List of OrderModel objects|
+|Get Orders (XML)|/getxml|GET|Returns a list of orders in XML format|List containing OrderModel objects|
+
+### Example Outputs:
+
+#### localhost:8080/service/getjson
+```json
+[{"id":0,"orderNo":"0000000001","productName":"Product 1","price":1.0,"quantity":1},  
+{"id":1,"orderNo":"0000000002","productName":"Product 2","price":2.0,"quantity":2},]
+```
+
+#### localhost:8080/service/getxml
+```xml
+<orders>    
+    <order>
+        <id>0</id>
+        <orderNo>0000000001</orderNo>
+        <price>1.0</price>
+        <productName>Product 1</productName>
+        <quantity>1</quantity>
+    </order>
+    <order>
+        <id>1</id>
+        <orderNo>0000000002</orderNo>
+        <price>2.0</price>
+        <productName>Product 2</productName>
+        <quantity>2</quantity>
+    </order>
+</orders>
+```
+## Research Questions
+1)  
+In Spring, @Component, @Service, and @Bean are all used to define beans, but they differ in purpose and usage. @Component is a generic stereotype annotation that marks a class for component scanning so Spring can automatically detect and register it as a bean (@Component vs @Repository and @Service in Spring, 2024). @Service is a specialized form of @Component intended for the service or business layer, helping clearly indicate that a class contains business logic and improving architectural readability, even though it behaves the same as @Component at runtime (@Component vs @Repository and @Service in Spring, 2024). In comparison, @Bean is used at the method level inside a configuration class to explicitly create and register a bean, giving developers more control over instantiation and configuration (Shriv, 2020). @Component or @Service should be used for auto-detected classes, while @Bean should be used for manual configuration is required.
+
+References:  
+@Component vs @Repository and @Service in Spring (2024). Baeldung. Retrieved on 2/4/2026 from https://www.baeldung.com/spring-component-repository-service  
+Shriv H. (2020). Tutorialspoint. Difference between @Bean and @Component annotation in Spring. https://www.tutorialspoint.com/difference-between-bean-and-component-annotation-in-spring
+
+2) 
+
+## Conclusion
+This assignment strengthened my understanding of Spring's Inversion of Control (IoC) and Dependency Injection (DI) by implementing and swapping Spring Beans through interfaces and configuration, reinforcing the importance of loosely coupled design. I also learned how bean lifecycle methods and scopes (singleton, prototype, request, and session) affect object creation and management within a Spring application. The final part of this activity introduced REST service development, where I built and tested JSON and XML endpoints using Spring Rest controllers, Swagger-style documentation, and Postman, reinforcing best practices for API design and testing.
