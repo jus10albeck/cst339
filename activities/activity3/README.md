@@ -130,3 +130,7 @@ The IoC container (2026). Spring. Retrieved on February 6, 2026 from https://doc
 
 ## Conclusion
 This assignment strengthened my understanding of Spring's Inversion of Control (IoC) and Dependency Injection (DI) by implementing and swapping Spring Beans through interfaces and configuration, reinforcing the importance of loosely coupled design. I also learned how bean lifecycle methods and scopes (singleton, prototype, request, and session) affect object creation and management within a Spring application. The final part of this activity introduced REST service development, where I built and tested JSON and XML endpoints using Spring Rest controllers, Swagger-style documentation, and Postman, reinforcing best practices for API design and testing.
+
+## Links to code
+- [topic3-1 code](https://github.com/jus10albeck/cst339/tree/main/activities/activity3/topic3-1)
+- [topic3-2 Code](https://github.com/jus10albeck/cst339/tree/main/activities/activity3/topic3-2)
