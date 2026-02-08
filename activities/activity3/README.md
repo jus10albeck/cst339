@@ -123,6 +123,10 @@ References:
 Shriv H. (2020). Tutorialspoint. Difference between @Bean and @Component annotation in Spring. https://www.tutorialspoint.com/difference-between-bean-and-component-annotation-in-spring
 
 2) 
+An inversion of control (IoC) container encourages designing to interfaces because it resolves dependencies by type, not by concrete implementation (The IoC container, 2026). When components depend on abstractions, the container can swap implementations at configuration time, enabling testability, loose coupling, and easier evolution of code (The IoC container, 2026). Interfaces express clear contracts, what service does rather than how, so modules interact via stable boundaries, reducing ripple effects from changes and preventing hidden runtime coupling (The IoC container, 2026). This separation also supports cross-cutting concerns via decorators or proxies without modifying business code. Ultimately, IoC containers reward interface-driven design with cleaner composition, better maintainability, and flexible configuration across environments.
+
+References:  
+The IoC container (2026). Spring. Retrieved on February 6, 2026 from https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/beans.html
 
 ## Conclusion
 This assignment strengthened my understanding of Spring's Inversion of Control (IoC) and Dependency Injection (DI) by implementing and swapping Spring Beans through interfaces and configuration, reinforcing the importance of loosely coupled design. I also learned how bean lifecycle methods and scopes (singleton, prototype, request, and session) affect object creation and management within a Spring application. The final part of this activity introduced REST service development, where I built and tested JSON and XML endpoints using Spring Rest controllers, Swagger-style documentation, and Postman, reinforcing best practices for API design and testing.
