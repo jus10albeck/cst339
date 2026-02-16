@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Library</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/response/2.2.0/css/responsive.dataTables.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Eagle+Lake&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/response/2.2.0/js/dataTables.responsive.js"></script>
+    <style>
+        .navbar
+        {
+            margin: 0;
+            border-radius: 0;
+            border: none;
+        }
+
+        body
+        {
+            background-color: #B4CAE4;
+        }
+
+        h1
+        {
+            font-family: 'Eagle Lake', cursive;
+            color: #1D3461;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        h2
+        {
+            font-family: 'Eagle Lake', cursive;
+            color: #1D3461;
+        }
+
+        p
+        {
+            font-family: 'Merriweather', serif;
+            font-size: 18px;
+            color: #333333;
+        }
+    
+
+        .navbar-default .nav-hover
+        {
+            color: #829CBC !important;
+            position: relative;
+            transition: color 0.25s ease, background 0.25s ease;
+        }
+
+        .navbar-default .nav-hover:hover
+        {
+            color: #ffffff !important;
+        }
+
+    </style>
+</head>
+<body>
+    
+        <!-- Insert Header Fragment -->
+    <div th:replace="layouts/common :: header"></div>
+
+    <div align="center">
+        <!-- Main Body Content -->
+        <section layout:fragment="content">
+            <p>My Body Contents</p>
+        </section>
+    </div>
+</body>
+</html>

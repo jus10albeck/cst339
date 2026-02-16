@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/defaultTemplate}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <h1>Login</h1>
+        <br/>
+
+        <form action="#" th:action="@{/login/doLogin}" th:object="${loginModel}" method="post">
+           
+            <table style="font-family: Merriweather, serif;
+                    font-size: 16px;">
+                <tr>
+                    <td style="padding-right: 10px;">Username:</td>
+                    <td style="padding-bottom: 5px">
+                        <input type="text" th:field="*{username}" >
+                    </td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td style="padding-bottom: 5px">
+                        <input type="password" th:field="*{password}">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="text-align: center;">
+                        <input type="submit" value="Submit">
+                    </td>
+                </tr>
+        </table> 
+
+        <div th:if="${authError}" th:text="${authError}" style="color: red"></div>
+        <div style="color:red; margin-top: 8px;">
+            <div th:if="${#fields.hasAnyErrors()}">
+                <ul style="margin: 6px 0 0 18px; padding: 0;">
+                    <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+                </ul>
+            </div>
+        </div>
+        </form>
+        <br/>
+
+        <p>Don't have an account?<br/>
+            <a th:href="@{/registration/}" style="margin-top: 1px;">
+                Register Here
+            </a>
+        </p>
+    </div>
+</body>
+</html>
