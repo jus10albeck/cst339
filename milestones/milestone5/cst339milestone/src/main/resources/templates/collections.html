@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html 
+    xmlns:th="http://www.thymeleaf.org" 
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="layouts/defaultTemplate">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collections</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <h1>Collections</h1>
+        <p>This is your collection of movies! <br>
+            Add movies to your collection by clicking the "Add Movie" button below. <br>
+            You can also sort your collection by clicking on the column headers. <br>
+            Additional Movie collections will be added soon...
+        </p>
+
+        <!-- Add movie Button -->
+         <div style="margin: 10px 0 16px;">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#addMovieModal">
+                Add Movie
+            </button>
+        </div>
+
+        <!-- Filters -->
+        <div style="margin: 0 0 12px">
+            <button class = "btn btn-link" data-toggle="collapse" data-target="#filtersPanel"
+            aria-expanded="false" aria-controls="filtersPanel">
+                Filters
+            </button>
+        </div>
+
+        <div id="filtersPanel" class="collapse">
+            <div class="panel panel-default" style="max-width: 50%;">
+                <div class="panel-body">
+                    <form id="filtersForm" onsubmit="return false">
+
+                       <!-- Name Contains-->
+                        <div class="form-group">
+                            <label for="filterName">Name Contains</label>
+                            <input type="text" class="form-control" id="filterName" placeholder="Enter text to filter by name">
+                        </div>
+
+                        <!-- Director Contains-->
+                        <div class="form-group">
+                            <label for="filterDirector">Director Contains</label>
+                            <input type="text" class="form-control" id="filterDirector" placeholder="Enter text to filter by director">
+                        </div>
+
+                        <!-- Rating Filters-->
+                        <div class="form-group">
+                            <label>Rating</label>
+                            <div>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="filter-rating" value="G">G</label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="filter-rating" value="PG">PG</label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="filter-rating" value="PG-13">PG-13</label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="filter-rating" value="R">R</label>
+                            </div>
+                        </div>
+
+                        <!-- Video Type Filters -->
+                        <div class="form-group">
+                            <label>Video Type</label>
+                            <div id="videoTypeOptions">
+                                    <!-- Video Types Populated by JavaScript -->
+                            </div>
+                        </div>
+                    </form>    
+                </div>
+            </div>
+        </div>
+       
+        <!-- Album Selector Row -->        
+        <div class="text-center" style="margin: 12px 0 18px;">
+            <div class="form-inline" style="display:inline-block;">
+                <form id="albumSelectForm" class="form-inline" th:action="@{/collections/}" method="get" style="display:inline-block;">
+                    <div class="form-group">
+                        <select class="form-control" name="albumId" id="albumSelect" style="min-width: 240px;">
+                            <option th:each="a : ${albums}"
+                                    th:value="${a.id}"
+                                    th:text="${a.name}"
+                                    th:selected="${a.id} == ${currentAlbumId}">
+                            </option>
+                        </select>
+                    </div>
+                </form>
+
+                <!-- New Album button aligned next to the select -->
+                <button type="button"
+                        class="btn btn-success"
+                        data-toggle="modal"
+                        data-target="#createAlbumModal"
+                        style="margin-left:12px;">
+                New Album
+                </button>
+            </div>
+        </div>
+
+
+        <!-- Add Movie Modal -->
+        <div class="modal fade" id="addMovieModal" tabindex="-1"
+        role="dialog" aria-labelledby="addMovieModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+
+                        <h4 class="modal-title" id="addMovieModalLabel">Add Movie to Collection</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <form th:action="@{/collections/create}" th:object="${movie}" method="post">
+                            <div class="form-group">
+                                <label for="movieName">Movie Name</label>
+                                <input type="text" class="form-control" id="movieName" th:field="*{movieName}" placeholder="Enter movie name">
+                                <div class="text-danger" th:if="${#fields.hasErrors('movieName')}" th:errors="*{movieName}"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="director">Director</label>
+                                <input type="text" class="form-control" id="director" th:field="*{director}" placeholder="Enter director name">
+                                <div class="text-danger" th:if="${#fields.hasErrors('director')}" th:errors="*{director}"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="rating">Rating</label>
+                                <select class="form-control" id="rating" th:field="*{rating}">      
+                                    <option value="">-- Select --</option>
+                                    <option value="G">G</option>
+                                    <option value="PG">PG</option>
+                                    <option value="PG-13">PG-13</option>
+                                    <option value="R">R</option>
+                                </select>
+                                <div class="text-danger" th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="videoType">Video Type</label>
+                                <select class="form-control" id="videoType" th:field="*{videoType}">                                   
+                                    <option value="">-- Select --</option>
+                                    <option value="DVD">DVD</option>
+                                    <option value="Blu-Ray">Blu-ray</option>
+                                    <option value="VHS">VHS</option>
+                                </select>
+                                <div class="text-danger" th:if="${#fields.hasErrors('videoType')}" th:errors="*{videoType}"></div>
+                            </div>
+
+                            <div class="modal-footer" style="padding-left:0; padding-right:0;">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Add Movie</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div> 
+
+        <!-- Edit Movie Modal -->         
+        <div class="modal fade" id="editMovieModal" tabindex="-1" role="dialog" aria-labelledby="editMovieModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="editMovieModalLabel">Edit Movie</h4>
+                    </div>                    
+                        <form id="editMovieForm"
+                            method="post"
+                            th:object="${movie}"
+                            th:action="${openEditModal} ? @{/collections/edit/{id}(id=*{id})} : ''">
+                        <div class="modal-body">
+                            <!-- Bind id so it round-trips on validation errors -->
+                            <input type="hidden" id="editId" th:field="*{id}" />
+
+                            <div class="form-group">
+                            <label for="editMovieName">Movie Name</label>
+                            <input type="text" class="form-control" id="editMovieName" th:field="*{movieName}" placeholder="Enter movie name">
+                            <div class="text-danger" th:if="${#fields.hasErrors('movieName')}" th:errors="*{movieName}"></div>
+                            </div>
+
+                            <div class="form-group">
+                            <label for="editDirector">Director</label>
+                            <input type="text" class="form-control" id="editDirector" th:field="*{director}" placeholder="Enter director name">
+                            <div class="text-danger" th:if="${#fields.hasErrors('director')}" th:errors="*{director}"></div>
+                            </div>
+
+                            <div class="form-group">
+                            <label for="editRating">Rating</label>
+                            <select class="form-control" id="editRating" th:field="*{rating}">
+                                <option value="">-- Select --</option>
+                                <option value="G">G</option>
+                                <option value="PG">PG</option>
+                                <option value="PG-13">PG-13</option>
+                                <option value="R">R</option>
+                            </select>
+                            <div class="text-danger" th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}"></div>
+                            </div>
+
+                            <div class="form-group">
+                            <label for="editVideoType">Video Type</label>
+                            <select class="form-control" id="editVideoType" th:field="*{videoType}">
+                                <option value="">-- Select --</option>
+                                <option value="DVD">DVD</option>
+                                <option value="Blu-Ray">Blu-ray</option>
+                                <option value="VHS">VHS</option>
+                            </select>
+                            <div class="text-danger" th:if="${#fields.hasErrors('videoType')}" th:errors="*{videoType}"></div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer" style="padding-left:0; padding-right:0;">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Album Modal -->
+        <div class="modal fade" id="createAlbumModal" tabindex="-1" role="dialog" aria-labelledby="createAlbumModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+                        <h4 class="modal-title" id="createAlbumModalLabel">Create New Album</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <form th:action="@{/collections/albums/create}" th:object="${album}" method="post">
+                            <div class="form-group">
+                                <label for="albumName">Album Name</label>
+                                <input type="text" class="form-control" id="albumName" th:field="*{name}" placeholder="Enter album name">
+                                <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="albumDesc">Description (optional)</label>
+                                <input type="text" class="form-control" id="albumDesc" th:field="*{description}" placeholder="Short description">
+                                <div class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                            </div>
+
+                            <div class="modal-footer" style="padding-left:0; padding-right:0;">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-success">Create Album</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        
+        <!-- Add to Album Modal -->
+        <div class="modal fade" id="addToAlbumModal" tabindex="-1" role="dialog" aria-labelledby="addToAlbumModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+                        <h4 class="modal-title" id="addToAlbumModalLabel">Add Movie to Album</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/collections/add-to-album}" method="post" id="addToAlbumForm">
+                        <!-- hidden: movie id -->
+                        <input type="hidden" name="movieId" id="addToAlbumMovieId">
+                        <input type="hidden" name="fromAlbumId" th:value="${currentAlbumId}">
+                        <!-- choose album -->
+                            <div class="form-group">
+                                <label for="addToAlbumSelect">Album</label>
+                                <select class="form-control" id="addToAlbumSelect" name="albumId">
+                                <option th:each="a : ${albums}" th:value="${a.id}" th:text="${a.name}" th:selected="${a.id} == ${currentAlbumId}"></option>
+                                </select>
+                            </div>
+                            <div class="modal-footer" style="padding-left:0; padding-right:0;">
+                                <div class="pull-left">
+                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#createAlbumModal" data-dismiss="modal">
+                                    Create New Album
+                                </button>
+                                </div>
+                                <div class="pull-right">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Add</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CSS for sorting table headers -->
+        <style>
+            th.sortable 
+            {
+                cursor: pointer;
+                user-select: none;
+                transition: filter .15s ease,
+                    color .15s ease, 
+                    background-color .15s ease;
+            }
+            th.sortable:hover 
+            {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+            
+            th.sortable .arrow
+            {
+                margin-left: 6px;
+                opacity: 0.8;
+            }
+        </style>
+
+        <!-- Movie Table -->
+        <table id="moviesTable" class="table" style="width:60%; background-color: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,.4);">
+            <thead>
+                <tr>
+                    <th class="sortable" data-type="number" title="Sort by ID" style="text-align:center">ID</th>
+                    <th class="sortable" data-type="text" title="Sort by Movie Name" style="text-align:center">Movie Name</th>
+                    <th class="sortable" data-type="text" title="Sort by Director" style="text-align:center">Director</th>
+                    <th class="sortable" data-type="rating" title="Sort by Rating (G → R)" style="text-align:center">Rating</th>
+                    <th class="sortable" data-type="text" title="Sort by Video Type" style="text-align:center">Video Type</th>
+                    <th style="text-align:center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${movies==null || #lists.isEmpty(movies)}">
+                    <td style="text-align: center" colspan="5">No Movies Available</td>
+                </tr>
+
+                <tr th:each="movie, iter : ${movies}">
+                    <td style="text-align:center"><h5 th:text="${iter.count}"></h5></td>
+                    <td style="text-align:center"><h5 th:text="${movie.movieName}"></h5></td>
+                    <td style="text-align:center"><h5 th:text="${movie.director}"></h5></td>
+                    <td style="text-align:center"><h5 th:text="${movie.rating}"></h5></td>
+                    <td style="text-align:center"><h5 th:text="${movie.videoType}"></h5></td>
+                    <td style="text-align:center">                       
+                        <button type="button"
+                                class="btn btn-xs btn-primary btn-edit"
+                                title="Edit"
+                                th:attr="
+                                    data-id=${movie.id},
+                                    data-name=${movie.movieName},
+                                    data-director=${movie.director},
+                                    data-rating=${movie.rating},
+                                    data-vtype=${movie.videoType}">
+                            Edit
+                        </button>
+
+                        <form th:action="@{/collections/delete/{id}(id=${movie.id})}"
+                                method="post"
+                                style="display:inline-block; margin-left:6px;"
+                                onsubmit="return confirm('Remove from this album?');">
+
+                            <input type="hidden" name="albumId" th:value="${currentAlbumId}">
+                            <button type="submit" class="btn btn-xs btn-danger" title="Delete">X</button>
+                        </form>
+
+                        <button type="button" class="btn btn-xs btn-info" style="margin-left: 6px;"
+                                title="Add to Album" th:attr="data-movie-id=${movie.id}" data-toggle="modal"
+                                data-target="#addToAlbumModal">
+                            +
+                        </button>
+                    </td>
+                </tr>
+
+                <tr id="noFilterResults" style="display:none">
+                    <td style="text-align: center" colspan="5">No Results Found</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- JavaScript for sorting and filtering -->
+        <script>
+            (function () 
+            {
+                const table = document.getElementById('moviesTable');
+                const tbody = table.querySelector('tbody');
+                const headers = Array.from(table.querySelectorAll('thead th.sortable'));
+                const noFilterRow = document.getElementById('noFilterResults');
+
+                // Column indices (based on your table): [0] ID, [1] Name, [2] Director, [3] Rating, [4] VideoType
+                const COLS = { ID:0, NAME:1, DIRECTOR:2, RATING:3, VTYPE:4 };
+
+                // Custom rating order
+                const ratingOrder = { 'G':0, 'PG':1, 'PG-13':2, 'R':3 };
+
+                // Track sort direction per column: true=asc, false=desc
+                const sortState = {};
+
+                function getCellText(row, colIndex) 
+                {
+                    const cell = row.children[colIndex];
+                    return cell ? cell.innerText.trim() : '';
+                }
+
+                function compareValues(a, b, type, asc) {
+                    let result = 0;
+                    if (type === 'number') 
+                    {
+                        const na = parseFloat(a) || 0;
+                        const nb = parseFloat(b) || 0;
+                        result = na - nb;
+                    }
+                    else if (type === 'rating') 
+                    {
+                        const ra = ratingOrder[a] ?? Number.POSITIVE_INFINITY;
+                        const rb = ratingOrder[b] ?? Number.POSITIVE_INFINITY;
+                        result = ra - rb;
+                    } 
+                    else 
+                    {
+                        // default text (case-insensitive)
+                        result = a.localeCompare(b, undefined, { sensitivity: 'base' });
+                    }
+                    return asc ? result : -result;
+                }
+
+                
+                function sortByColumn(colIndex, type) {
+                    const rows = Array.from(tbody.querySelectorAll('tr'))
+                    .filter(r => r.id !== 'noFilterResults');
+
+                    const asc = !(colIndex in sortState) ? true : !sortState[colIndex];
+                    sortState[colIndex] = asc;
+
+                    rows.sort((r1, r2) => {
+                    const v1 = getCellText(r1, colIndex);
+                    const v2 = getCellText(r2, colIndex);
+                    return compareValues(v1, v2, type, asc);
+                    });
+                    rows.forEach(r => tbody.appendChild(r));
+
+                    headers.forEach((th, i) => {
+                    th.classList.remove('sorted-asc', 'sorted-desc');
+                    const prev = th.querySelector('.arrow');
+                    if (prev) prev.remove();
+
+                    if (i === colIndex) {
+                        const arrow = document.createElement('span');
+                        arrow.className = 'arrow';
+                        arrow.textContent = asc ? '▲' : '▼';
+                        th.appendChild(arrow);
+                        th.classList.add(asc ? 'sorted-asc' : 'sorted-desc');
+                    }
+                    });
+                }
+
+                headers.forEach((th, i) => {
+                    th.addEventListener('click', () => sortByColumn(i, th.dataset.type || 'text'));
+                });
+
+
+                // ---------------- Filtering ----------------
+                const filterName     = document.getElementById('filterName');
+                const filterDirector = document.getElementById('filterDirector');
+                const ratingCheckboxes = () => Array.from(document.querySelectorAll('.filter-rating'));
+                const videoTypeCtr   = document.getElementById('videoTypeOptions');
+
+                // Populate "Video Type" checkboxes from the table contents
+                function populateVideoTypes() 
+                {
+                    const types = new Set();
+                    Array.from(tbody.querySelectorAll('tr'))
+                    .filter(r => r.id !== 'noFilterResults')
+                    .forEach(r => types.add(getCellText(r, COLS.VTYPE)));
+                    // Build checkboxes
+                    videoTypeCtr.innerHTML = '';
+                    Array.from(types).sort().forEach(type => 
+                    {
+                        const id = 'vt_' + type.replace(/\W+/g, '_');
+                        const label = document.createElement('label');
+                        label.className = 'checkbox-inline';
+                        label.innerHTML = `<input type="checkbox" class="filter-vtype" value="${type}" id="${id}"> ${type}`;
+                        videoTypeCtr.appendChild(label);
+                    });
+                }
+                populateVideoTypes();
+
+                function getSelectedValues(selector) 
+                {
+                    return new Set(Array.from(document.querySelectorAll(selector))
+                    .filter(cb => cb.checked).map(cb => cb.value));
+                }
+
+                function applyFilters() 
+                {
+                    const nameQ = (filterName.value || '').trim().toLowerCase();
+                    const dirQ  = (filterDirector.value || '').trim().toLowerCase();
+                    const ratings = getSelectedValues('.filter-rating');
+                    const vtypes  = getSelectedValues('.filter-vtype');
+
+                    let visibleCount = 0;
+
+                    Array.from(tbody.querySelectorAll('tr'))
+                    .filter(r => r.id !== 'noFilterResults')
+                    .forEach(row => 
+                    {
+                        const name = getCellText(row, COLS.NAME).toLowerCase();
+                        const dir  = getCellText(row, COLS.DIRECTOR).toLowerCase();
+                        const rate = getCellText(row, COLS.RATING);
+                        const vt   = getCellText(row, COLS.VTYPE);
+
+                        // checks (all must pass)
+                        const nameOk = !nameQ || name.includes(nameQ);
+                        const dirOk  = !dirQ  || dir.includes(dirQ);
+                        const rateOk = ratings.size === 0 || ratings.has(rate);
+                        const vtOk   = vtypes.size  === 0 || vtypes.has(vt);
+
+                        const show = nameOk && dirOk && rateOk && vtOk;
+                        row.style.display = show ? '' : 'none';
+                        if (show) visibleCount++;
+                    });
+
+                    // toggle "no results" row
+                    noFilterRow.style.display = (visibleCount === 0) ? '' : 'none';
+                }
+
+                // filtering as user types/checks
+                filterName.addEventListener('input', applyFilters);
+                filterDirector.addEventListener('input', applyFilters);
+                // Delegate rating & video type changes
+                document.addEventListener('change', (e) => 
+                {
+                    if (e.target.matches('.filter-rating, .filter-vtype')) applyFilters();
+                });
+            })();
+        </script>
+        
+        <!-- JavaScript for editing and deleting -->       
+        <script th:inline="javascript">
+        (function () {
+        // ---- Utilities ----
+        function getClosestEditButton(evt) {
+            const t = evt.target;
+            if (!t || !t.closest) return null; // text nodes or older nodes
+            return t.closest('.btn-edit');
+        }
+
+        function showEditModal() {
+            var modalEl = document.getElementById('editMovieModal');
+            // Bootstrap 5 path (no jQuery)
+            if (window.bootstrap && bootstrap.Modal) {
+            bootstrap.Modal.getOrCreateInstance(modalEl).show();
+            return;
+            }
+            // Bootstrap 3/4 path (jQuery)
+            if (window.jQuery && typeof jQuery.fn.modal === 'function') {
+            jQuery('#editMovieModal').modal('show');
+            return;
+            }
+            // Fallback (no-op, but prevents JS error)
+            console.warn('No Bootstrap modal API found.');
+        }
+
+        document.addEventListener('click', function (e) {
+            const btn = getClosestEditButton(e);
+            if (!btn) return;
+
+            const id     = btn.getAttribute('data-id');
+            const name   = btn.getAttribute('data-name')     || '';
+            const dir    = btn.getAttribute('data-director') || '';
+            const rating = btn.getAttribute('data-rating')   || '';
+            const vtype  = btn.getAttribute('data-vtype')    || '';
+
+            // Fill form fields
+            document.getElementById('editId').value           = id;
+            document.getElementById('editMovieName').value    = name;
+            document.getElementById('editDirector').value     = dir;
+            document.getElementById('editRating').value       = rating;
+            document.getElementById('editVideoType').value    = vtype;
+
+            // Set POST /collections/edit/{id}
+            document.getElementById('editMovieForm').setAttribute('action', '/collections/edit/' + id);
+
+            // Show the modal
+            showEditModal();
+        });
+
+        // ---- Re-open after server-side validation (redirect) ----
+        // The controller should set these flash attributes:
+        //   openEditModal=true, and put the bound MovieModel under "movie"
+        var openEdit = /*[[${openEditModal}]]*/ false;
+        if (openEdit) {
+            var id     = /*[[${movie.id}]]*/ 0;
+            var name   = /*[[${movie.movieName}]]*/ '';
+            var dir    = /*[[${movie.director}]]*/ '';
+            var rating = /*[[${movie.rating}]]*/ '';
+            var vtype  = /*[[${movie.videoType}]]*/ '';
+
+            document.getElementById('editId').value        = id || '';
+            document.getElementById('editMovieName').value = name || '';
+            document.getElementById('editDirector').value  = dir || '';
+            document.getElementById('editRating').value    = rating || '';
+            document.getElementById('editVideoType').value = vtype || '';
+
+            document.getElementById('editMovieForm').setAttribute('action', '/collections/edit/' + id);
+            showEditModal();
+        }
+        
+        document.addEventListener('click', function (e) {
+            const btn = e.target.closest && e.target.closest('button.btn-info');
+            if (!btn) return;
+            const movieId = btn.getAttribute('data-movie-id');
+            const input = document.getElementById('addToAlbumMovieId');
+            if (input && movieId) input.value = movieId;
+        });
+
+        
+        document.getElementById('albumSelect')?.addEventListener('change', function(){
+            document.getElementById('albumSelectForm').submit();
+        });
+
+        var openCreateModal = false;       // Add Movie
+        var openEditModal = false;         // Edit Movie
+        var openCreateAlbumModal = false;  // Create Album
+
+        function openModalById(id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+
+            // Bootstrap 5 (no jQuery)
+            if (window.bootstrap && window.bootstrap.Modal) {
+            var instance = bootstrap.Modal.getOrCreateInstance(el);
+            instance.show();
+            return;
+            }
+        }
+
+        if (openCreateModal)      openModalById('addMovieModal');
+        if (openEditModal)        openModalById('editMovieModal');
+        if (openCreateAlbumModal) openModalById('createAlbumModal');
+
+        })();
+        </script>
+
+        <script th:if="${openCreateModal}">
+            $('#addMovieModal').modal('show');
+        </script>
+    </div>
+</body>
+</html>
