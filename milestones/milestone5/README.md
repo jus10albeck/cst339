@@ -33,7 +33,7 @@ A bug that I found during my video explanation was that when removing a movie fr
 ![Collections](images/collection1.png)
 
 - Screenshot of adding a movie to an album
-![Collections](images/AddToAlbum.png)
+![Collections](images/addToAlbum.png)
 
 - Screenshot of creating new albums
 ![Collections](images/newAlbum.png)
