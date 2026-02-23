@@ -42,6 +42,7 @@ A bug that I found during my video explanation was that when removing a movie fr
 ![Collections](images/editMovie.png)
 
 - Screenshot of removing a movie from album
+
 ![Collections](images/removeFromAlbum.png)
 
 - Screenshot of the collections page
