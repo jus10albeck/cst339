@@ -39,7 +39,7 @@ A bug that I found during my video explanation was that when removing a movie fr
 ![Collections](images/newAlbum.png)
 
 - Screenshot of the modal to edit movies
-![Collections](images/EditMovie.png)
+![Collections](images/editMovie.png)
 
 - Screenshot of removing a movie from album
 ![Collections](images/removeFromAlbum.png)
@@ -49,4 +49,5 @@ A bug that I found during my video explanation was that when removing a movie fr
 
 ## Links
 - [Link to Video Explanation](https://youtu.be/YmPAX7DtK5Q)
+
 - [Link to the Code](https://github.com/jus10albeck/cst339/tree/main/milestones/milestone5/cst339milestone)
