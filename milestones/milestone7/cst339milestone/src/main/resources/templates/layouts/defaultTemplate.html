@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Library</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/response/2.2.0/css/responsive.dataTables.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Eagle+Lake&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/response/2.2.0/js/dataTables.responsive.js"></script>
+    <style>
+        .navbar
+        {
+            margin: 0;
+            border-radius: 0;
+            border: none;
+        }
+
+        body
+        {
+            background-color: #B4CAE4;
+        }
+
+        h1
+        {
+            font-family: 'Eagle Lake', cursive;
+            color: #1D3461;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        h2
+        {
+            font-family: 'Eagle Lake', cursive;
+            color: #1D3461;
+        }
+
+        p
+        {
+            font-family: 'Merriweather', serif;
+            font-size: 18px;
+            color: #333333;
+        }
+    
+
+        .navbar-default .nav-hover
+        {
+            color: #829CBC !important;
+            position: relative;
+            transition: color 0.25s ease, background 0.25s ease;
+        }
+
+        .navbar-default .nav-hover:hover
+        {
+            color: #ffffff !important;
+        }
+     
+        .navbar .dropdown > a,
+        .navbar .dropdown-toggle 
+        {
+            transition: background-color .15s ease, color .15s ease, box-shadow .15s ease;
+        }
+
+        /* Light/dark friendly “brighten on hover” */
+        
+        .navbar-default .navbar-nav > .dropdown > a:hover,
+        .navbar-default .navbar-nav > .dropdown > a:focus,
+        .navbar-default .navbar-nav > .open > a,
+        .navbar-default .navbar-nav > .open > a:focus,
+        .navbar-default .navbar-nav > .open > a:hover 
+        {
+            background-color: transparent;
+            color: #ffffff !important;
+        }
+
+
+        /* === Dropdown menu items ================================================ */
+        .navbar .dropdown-menu > li > a,
+        .dropdown-menu .dropdown-item 
+        {
+            transition: background-color .15s ease, color .15s ease, padding-left .15s ease;
+        }
+
+        .navbar .dropdown-menu > li > a:hover,
+        .navbar .dropdown-menu > li > a:focus,
+        .dropdown-menu .dropdown-item:hover,
+        .dropdown-menu .dropdown-item:focus 
+        {
+            background-color: rgba(0, 123, 255, 0.12);  
+            color: inherit;                             
+            padding-left: 1.25rem;                      
+        }
+
+        .navbar-default .navbar-nav > .dropdown > a:hover .caret,
+        .navbar-default .navbar-nav > .open > a .caret 
+        {
+            border-top-color: #ffffff;
+            border-bottom-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    
+        <!-- Insert Header Fragment -->
+    <div th:replace="layouts/common :: header"></div>
+
+    <div align="center">
+        <!-- Main Body Content -->
+        <section layout:fragment="content">
+            <p>My Body Contents</p>
+        </section>
+    </div>
+</body>
+</html>
