@@ -45,7 +45,7 @@ Other than small graphical errors/bugs, There are no major errors with the websi
 ## Links
 
 - [Video Explanation Link](https://youtu.be/z4Wc_2Rqhpo)
-- [Link to Code]()
+- [Link to Code](https://github.com/jus10albeck/cst339/tree/main/milestones/milestone8/cst339milestone)
 
 ## IMPORTANT
-The javadoc is located in the index file in target/site folders.
+The javadoc is located in the file "index" in target/site folders.
