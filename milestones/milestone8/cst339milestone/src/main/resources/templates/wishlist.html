@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="layouts/defaultTemplate">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wishlist</title>
+</head>
+<body>
+  <div layout:fragment="content">
+    <h1>Wishlist</h1>
+    <p>
+      Track movies you want to buy later.
+    </p>
+
+    <!-- Add Movie trigger -->  
+    <div style="margin: 10px 0 16px;">
+      <button class="btn btn-primary" data-toggle="modal" data-target="#addMovieModal">Add Movie</button>
+    </div>
+    
+
+      <table id="moviesTable" class="table" style="width:60%; background-color:#ffffff; box-shadow:0 2px 4px rgba(0,0,0,.4);">
+      <thead>
+        <tr>
+          <th class="sortable" data-type="number" style="text-align:center">ID</th>
+          <th class="sortable" data-type="text" style="text-align:center">Movie Name</th>
+          <th class="sortable" data-type="text" style="text-align:center">Director</th>
+          <th class="sortable" data-type="rating" style="text-align:center">Rating</th>
+          <th style="text-align:center">Actions</th>
+        </tr>
+      </thead>
+      
+      <tbody>
+        <!-- Empty state -->
+        <tr th:if="${movies == null or #lists.isEmpty(movies)}">
+          <td style="text-align:center" colspan="6">No Movies in Wishlist</td>
+        </tr>
+
+        <!-- Rows -->
+        <tr th:each="row, iter : ${movies}">
+          <td style="text-align:center"><h5 th:text="${iter.count}">1</h5></td>
+          <td style="text-align:center"><h5 th:text="${row.movieName}">Movie</h5></td>
+          <td style="text-align:center"><h5 th:text="${row.director}">Director</h5></td>
+          <td style="text-align:center"><h5 th:text="${row.rating}">R</h5></td>
+
+          <td style="text-align:center">
+
+            <button type="button"
+                    class="btn btn-xs btn-success"
+                    data-toggle="modal" data-target="#moveModal"
+                    th:attr="data-movie-id=${row.movieId}, data-movie-title=${row.movieName}">
+              Add to Collection
+            </button>
+
+            <form th:action="@{/wishlist/{movieId}/remove(movieId=${row.movieId})}"
+                        method="post" style="display:inline-block">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <button type="submit" class="btn btn-xs btn-danger">X</button>
+                  </form>
+                </td>
+          </tr>
+      </tbody>
+    </table>
+    
+    <!-- Add Movie Modal -->
+    <div class="modal fade" id="addMovieModal" tabindex="-1" 
+    role="dialog" aria-labelledby="addMovieModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            <h4 class="modal-title" id="addMovieModalLabel">Add Movie to Wishlist</h4>
+          </div>
+
+          <div class="modal-body">
+            <form th:action="@{/wishlist/create}" th:object="${movie}" method="post">
+              <div class="form-group">
+                <label for="movieName">Movie Name</label>
+                <input type="text" class="form-control" id="movieName" th:field="*{movieName}" placeholder="Enter movie name">
+                <div class="text-danger" th:if="${#fields.hasErrors('movieName')}" th:errors="*{movieName}"></div>
+              </div>
+
+              <div class="form-group">
+                <label for="director">Director</label>
+                <input type="text" class="form-control" id="director" th:field="*{director}" placeholder="Enter director name">
+                <div class="text-danger" th:if="${#fields.hasErrors('director')}" th:errors="*{director}"></div>
+              </div>
+
+              <div class="form-group">
+                <label for="rating">Rating</label>
+                <select class="form-control" id="rating" th:field="*{rating}">      
+                  <option value="">-- Select --</option>
+                  <option value="G">G</option>
+                  <option value="PG">PG</option>
+                  <option value="PG-13">PG-13</option>
+                  <option value="R">R</option>
+                </select>
+                <div class="text-danger" th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}"></div>
+              </div>
+            </div>
+
+            <div class="modal-footer" style="padding-left:0; padding-right:0;">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Add Movie</button>
+            </div>
+
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Move to Collection Modal -->
+    <div class="modal fade" id="moveModal" tabindex="-1" role="dialog" aria-labelledby="moveModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <form id="moveForm" method="post" class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span>×</span></button>
+            <h4 class="modal-title" id="moveModalLabel">Add to my Collection</h4>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Title</label>
+              <input type="text" id="mf-title" class="form-control" disabled>
+            </div>
+            <div class="form-group">
+              <label for="mf-format">Format</label>
+              <select id="mf-format" name="format" class="form-control" required>
+                <option value="">Choose...</option>
+                <option>DVD</option>
+                <option>Blu-Ray</option>
+                <option>VHS</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer" style="padding-left:0; padding-right:0;">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <button type="button" class="btn btn-default" data-dismiss="modal" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Add & Remove from Wishlist</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Sorting JS -->
+    <script>
+      (function(){
+        const table = document.getElementById('moviesTable');
+        const tbody = table.querySelector('tbody');
+        const headers = Array.from(table.querySelectorAll('thead th.sortable'));
+        const ratingOrder = { 'G':0, 'PG':1, 'PG-13':2, 'R':3 };
+        const sortState = {};
+        function getCellText(row, colIndex){ const cell = row.children[colIndex]; return cell ? cell.innerText.trim() : ''; }
+        function compareValues(a,b,type,asc){
+          let r=0;
+          if(type==='number'){ r=(parseFloat(a)||0)-(parseFloat(b)||0); }
+          else if(type==='rating'){ r=(ratingOrder[a]??Infinity)-(ratingOrder[b]??Infinity); }
+          else { r=a.localeCompare(b, undefined, {sensitivity:'base'}); }
+          return asc ? r : -r;
+        }
+        function sortByColumn(colIndex, type){
+          const rows = Array.from(tbody.querySelectorAll('tr')).filter(r=>r.id!=='noFilterResults' && r.querySelector('td'));
+          const asc = !(colIndex in sortState) ? true : !sortState[colIndex];
+          sortState[colIndex] = asc;
+          rows.sort((r1,r2)=>compareValues(getCellText(r1,colIndex), getCellText(r2,colIndex), type || 'text', asc));
+          rows.forEach(r=>tbody.appendChild(r));
+          headers.forEach((th,i)=>{
+            th.classList.remove('sorted-asc','sorted-desc');
+            const prev = th.querySelector('.arrow'); if(prev) prev.remove();
+            if(i===colIndex){ const arrow=document.createElement('span'); arrow.className='arrow'; arrow.textContent=asc?'▲':'▼'; th.appendChild(arrow); th.classList.add(asc?'sorted-asc':'sorted-desc'); }
+          });
+        }
+        headers.forEach((th,i)=> th.addEventListener('click', ()=> sortByColumn(i, th.dataset.type || 'text')));
+      })();
+    </script>
+
+    <!-- Modal wiring -->
+    <script th:inline="javascript">
+    (function () {
+      var moveEl = document.getElementById('moveModal');
+
+      function setMoveAction(movieId, title){
+        var titleInput = document.getElementById('mf-title');
+        if (titleInput) titleInput.value = title || '';
+        var form = document.getElementById('moveForm');
+
+        var base = /*[[@{/wishlist/}]]*/ '';
+        form.setAttribute('action', base + movieId + '/move-to-collection');
+      }
+
+      if (window.jQuery && typeof jQuery.fn.modal === 'function') {
+        jQuery('#moveModal').on('show.bs.modal', function(e){
+          var btn = e.relatedTarget; if (!btn) return;
+          setMoveAction(btn.getAttribute('data-movie-id'),
+                        btn.getAttribute('data-movie-title'));
+        });
+      }
+    })();
+    </script>
+  </div>
+</body>
+</html>
