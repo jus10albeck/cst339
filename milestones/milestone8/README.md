@@ -47,5 +47,7 @@ Other than small graphical errors/bugs, There are no major errors with the websi
 - [Video Explanation Link](https://youtu.be/z4Wc_2Rqhpo)
 - [Link to Code](https://github.com/jus10albeck/cst339/tree/main/milestones/milestone8/cst339milestone)
 
+- [Link to Benchmark Video](https://youtu.be/cUPfVDWGcHY)
+
 ## IMPORTANT
 The javadoc is located in the file "index" in target/site folders.
